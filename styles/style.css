@@ -116,8 +116,10 @@ h1 {
 	margin-left: 3px;
 	border-radius: 2px;
 }
-.timeLine-chunk-inner {
+.timeLine-chunk-active ~ .timeLine-chunk > .timeLine-chunk-inner {
 	width: 0;
+}
+.timeLine-chunk-inner {
 	height: inherit;
 	background-color: #ffffff;
 	border-radius: inherit;
