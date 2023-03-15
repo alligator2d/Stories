@@ -116,6 +116,7 @@ h1 {
 	margin-left: 3px;
 	border-radius: 2px;
 }
+.timeLine-chunk-active > .timeLine-chunk-inner,
 .timeLine-chunk-active ~ .timeLine-chunk > .timeLine-chunk-inner {
 	width: 0;
 }
@@ -138,7 +139,7 @@ h1 {
 	margin: 0 auto;
 	
 }
-.player-content {
+.player-content-wrapper {
 	position: relative;
 }
 .player-chunk-active {
@@ -146,7 +147,7 @@ h1 {
 }
 .player-chunk-switcher {
 	position: absolute;
-	background-color: darkred;
+	/*background-color: darkred;*/
 	height: 100%;
 	width: 30%;
 }

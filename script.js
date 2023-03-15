@@ -2,28 +2,58 @@ let prev = document.querySelector(".player-chunk-prev");
 let next = document.querySelector(".player-chunk-next");
 
 prev.addEventListener("click", function () {
-	moveClassPrev("timeLine-chunk-active");
-	moveClassPrev("player-chunk-active");
-});
-
-next.addEventListener("click", function () {
-	moveClassNext("timeLine-chunk-active");
-	moveClassNext("player-chunk-active");
+	const el = moveClass("timeLine-chunk-active", "previousElementSibling", (el) => {
+		const inner = el.querySelector('.timeLine-chunk-inner')
+		let w = parseFloat(inner.style.width) || 0;
+		el.querySelector('.timeLine-chunk-inner').style.width = ''
+		return w<=10
+	})
 	
+	moveClass("player-chunk-active", "previousElementSibling");
+	if (el) {
+		el.querySelector('.timeLine-chunk-inner').style.width = ''
+	}
 });
 
-function moveClassNext(className) {
-	let active = document.querySelector("." + className);
-	if(active.nextElementSibling) {
+next.addEventListener("click", nextImg);
+
+function moveClass(className, method, pred) {
+	const active = document.querySelector("." + className);
+	
+	if(pred && !pred(active)) {
+		return
+	}
+	
+	if(active[method]) {
 		active.classList.remove(className);
-		active.nextElementSibling.classList.add(className);
+		active[method].classList.add(className);
+		return active;
+	}
+	return null;
+}
+
+function nextImg() {
+	const el = moveClass("timeLine-chunk-active", "nextElementSibling");
+	moveClass("player-chunk-active", "nextElementSibling");
+	if (el) {
+		el.querySelector('.timeLine-chunk-inner').style.width = ''
 	}
 }
-function moveClassPrev(className) {
-	let active = document.querySelector("." + className);
-	let prev = active.previousElementSibling
-	if(prev && (prev.classList.contains('player-chunk') || prev.classList.contains('timeLine-chunk'))) {
-		active.classList.remove(className);
-		active.previousElementSibling.classList.add(className);
-	}
+function runInterval (time, step) {
+	let timer;
+	clearInterval(timer) 
+	timer = setInterval(() => {
+		const active = document.querySelector(".timeLine-chunk-active").querySelector(".timeLine-chunk-inner");
+		let w = parseFloat(active.style.width) || 0;
+		if(w === 100 && active) {
+			if(nextImg()) {
+				// active.style.width = "";
+			}
+			return;
+		}
+		active.style.width = String(w + step) + "%";
+	}, time * 1000 * step / 100);
 }
+
+runInterval(2,  1)
+
