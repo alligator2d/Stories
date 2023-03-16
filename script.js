@@ -1,28 +1,47 @@
+function initPlayer(params) {
+	const target = document.querySelector(params.target);
+	if(target === null || params.slides === undefined) {
+		return;
+	}
+	let timeLineChunks = "";
+	let playerChunks = "";
+	let isFirst = true;
+	
+	for (const el of params.slides) {
+		timeLineChunks += `<div class="timeLine-chunk ${isFirst ? "timeLine-chunk-active" : ""}">
+						<div class="timeLine-chunk-inner"></div></div>`;
+		playerChunks += `<div class="player-chunk ${isFirst ? "player-chunk-active" : ""}">
+						<img src="${el.url}" alt="${el.name || ""}"></div>`;
+		isFirst = false;
+	}
+	target.innerHTML = `<div class="player"> 
+						<div class="timeLine">${timeLineChunks}</div>
+						<div class="player-content-wrapper">
+						<div class="player-chunk-switcher player-chunk-prev"></div>
+						<div class="player-chunk-switcher player-chunk-next"></div>
+						<div class="player-content">${playerChunks}</div>
+						</div>
+						</div>`;
+	
+}
+
+
 let prev = document.querySelector(".player-chunk-prev");
 let next = document.querySelector(".player-chunk-next");
 
 prev.addEventListener("click", function () {
-	const el = moveClass("timeLine-chunk-active", "previousElementSibling", (el) => {
-		const inner = el.querySelector('.timeLine-chunk-inner')
-		let w = parseFloat(inner.style.width) || 0;
-		el.querySelector('.timeLine-chunk-inner').style.width = ''
-		return w<=10
-	})
+	const el = moveClass("timeLine-chunk-active", "previousElementSibling");
 	
 	moveClass("player-chunk-active", "previousElementSibling");
-	if (el) {
-		el.querySelector('.timeLine-chunk-inner').style.width = ''
+	if(el) {
+		el.querySelector(".timeLine-chunk-inner").style.width = "";
 	}
 });
 
 next.addEventListener("click", nextImg);
 
-function moveClass(className, method, pred) {
+function moveClass(className, method) {
 	const active = document.querySelector("." + className);
-	
-	if(pred && !pred(active)) {
-		return
-	}
 	
 	if(active[method]) {
 		active.classList.remove(className);
@@ -35,13 +54,14 @@ function moveClass(className, method, pred) {
 function nextImg() {
 	const el = moveClass("timeLine-chunk-active", "nextElementSibling");
 	moveClass("player-chunk-active", "nextElementSibling");
-	if (el) {
-		el.querySelector('.timeLine-chunk-inner').style.width = ''
+	if(el) {
+		el.querySelector(".timeLine-chunk-inner").style.width = "";
 	}
 }
-function runInterval (time, step) {
+
+function runInterval(time, step) {
 	let timer;
-	clearInterval(timer) 
+	clearInterval(timer);
 	timer = setInterval(() => {
 		const active = document.querySelector(".timeLine-chunk-active").querySelector(".timeLine-chunk-inner");
 		let w = parseFloat(active.style.width) || 0;
@@ -55,5 +75,5 @@ function runInterval (time, step) {
 	}, time * 1000 * step / 100);
 }
 
-runInterval(2,  1)
+runInterval(2, 1);
 
