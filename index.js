@@ -9,24 +9,27 @@ initPlayer({
 					type: 'text',
 					value: 'Hello!',
 					styles: {
-						style: 'orange',
+						color: 'orange',
 						'font-size': '60px',
 						'text-shadow': '1px 1px #000',
 						top: '60%',
 						left: '30%',
-						'transform': 'rotate(-30deg)'
+						transform: 'rotate(-90deg)',
+						animation: 'scale 2s infinite ease-in-out'
+						
 					}
 				},
 				{
 					type: 'text',
 					value: 'Hello world!',
 					styles: {
-						style: 'blue',
+						color: 'blue',
 						'font-size': '30px',
 						'text-shadow': '1px 1px #000',
 						bottom: '60%',
 						right: '30%',
-						'transform': 'rotate(-30deg)'
+						transform: 'rotate(-30deg)',
+						animation: 'scale 2s infinite ease-in-out'
 					}
 				}
 			]
