@@ -89,3 +89,11 @@ h1 {
 		transform: scale(2);
 	}
 }
+.watercolor {
+	color: white;
+	text-shadow: 1px 1px black;
+	font-size: 25px;
+	text-align: center;
+	background: url('../img/blue-watercolor-brush-stroke-10-1.png') no-repeat center;
+	background-size: contain;
+}
