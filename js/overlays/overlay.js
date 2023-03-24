@@ -1,5 +1,9 @@
 export class Overlay {
 	/**
+	 * 
+	 */
+	type;
+	/**
 	 * Список дoполнительных классов для виджета 
 	 * @type {string[]}
 	 */
@@ -13,12 +17,21 @@ export class Overlay {
 	/**
 	 * Создает новый экземпляр виджета
 	 * @param params{{
+	 *	   type: string,
 	 *     classes?: string[],
 	 *     styles?: Object<string, string>
 	 *  }=}
+	 *  1. Type - тип создаваемого класса
+	 *  2. [classes] - список дополнительных классов
+	 *  3. [styles] - список дополнительных стилей
 	 */
+	
 	constructor(params) {
-		
+			this.type = params.type;
+			if(typeof this.type !== 'string')  {
+				throw new TypeError('Additional types can be defined only as String')
+				
+			}
 			this.classes = params?.classes ?? this.classes;
 			if(!Array.isArray(this.classes)) {
 				throw new TypeError('Additional classes can be defined only as Array')
