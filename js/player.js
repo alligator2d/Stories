@@ -1,5 +1,10 @@
-import { Overlay } from "./overlays/overlay";
-import * as overlays from "./overlays/index";
+import { Overlay } from "./overlays/overlay.js";
+import * as overlays from "./overlays/index.js";
+
+import ClassSwitcher from "./switcher.js";
+
+
+
 
 /**
  *
@@ -11,7 +16,7 @@ const Slide = null;
  */
 const Slides = null;
 
-export class Player {
+export default class Player {
 	/**
 	 * Контейнер для плеера
 	 * @type {Element}
@@ -21,6 +26,10 @@ export class Player {
 	 * @type {Array}
 	 */
 	slides;
+	/**
+	 * @protected
+	 */
+	cs;
 	
 	/**
 	 *
@@ -42,7 +51,19 @@ export class Player {
 		if(!Array.isArray(this.slides) === undefined) {
 			throw new TypeError("Slides to render is not specified");
 		}
+		this.cs = new ClassSwitcher(this.target)
+		
+		this.mount()
 	}
+	mount () {
+		this.target.appendChild(this.generatePlayerLayout()) 
+		 
+		this.target.querySelector(".player-chunk-prev").addEventListener("click", this.cs.switchToPrev.bind(this.cs));
+		this.target.querySelector(".player-chunk-next").addEventListener("click", this.cs.switchToNext.bind(this.cs));
+		
+		this.cs.runInterval(2, 1);
+	}
+	
 	
 	/**
 	 *
@@ -64,7 +85,7 @@ export class Player {
 	 *
 	 * @returns {DocumentFragment}
 	 */
-	generatePlayerChunk() {
+	generatePlayerChunks() {
 		const wrapper = document.createDocumentFragment();
 		
 		for (const [i, slide] of this.slides.entries()) {
@@ -78,7 +99,9 @@ export class Player {
 			el.innerHTML = `<div class="player-chunk ${i === 0 ? "player-chunk-active" : ""}">
 						<img src="${slide.url}" alt="${slide.name ?? ""}" style="${style.join(";")}">
 						</div>`;
-			wrapper.appendChild(el);
+			const chunk = el.children[0]
+			chunk.appendChild(this.generateOverlays(slide))
+			wrapper.appendChild(chunk);
 		}
 		return wrapper;
 	}
@@ -94,7 +117,6 @@ export class Player {
 		if(slide.overlays == null) {
 			return wrapper;
 		}
-		// let res = "";
 		for (const params of slide.overlays) {
 			if(!(params.type in overlays)) {
 				throw new TypeError("The specified type of overlay is not defined");
@@ -102,51 +124,37 @@ export class Player {
 			const overlay = new overlays[params.type](params);
 			wrapper.appendChild(overlay.render());
 			
-			// const classes = el.classes !== undefined ? el.classes.join(' ') : ''
-			//
-			// const styles = (el.styles !== undefined ? Object.entries(el.styles) : [])
-			// .map((i) => i.join(":"))
-			// .join(";");
-			//
-			// res += `<div class="player-chunk-overlay ${classes}" style="${styles}">${renderOverlay(params)}</div>`;
 		}
 		return wrapper;
-		// function renderOverlay (overlay) {
-		// 	if (overlay.type === 'text') {
-		// 		return overlay.value
-		// 	}
-		// 	if (overlay.type === 'img'){
-		// 		return `img src="${overlay.value}" alt=''`
-		// 	}
-		// 	return ''
-		// }
 	}
 	
+	/**
+	 * 
+	 * @returns {Element}
+	 */
 	generatePlayerLayout() {
 		const timeLine = document.createElement("div");
 		timeLine.setAttribute("class", "timeLine");
 		timeLine.appendChild(this.generateTimelineChunks())
+		
+		const content = document.createElement("div");
+		content.setAttribute("class", "player-content");
+		content.appendChild(this.generatePlayerChunks())
 		
 		
 		const contentWrapper = document.createElement("div");
 		contentWrapper.setAttribute("class", "player-content-wrapper");
 		
 		contentWrapper.innerHTML = `<div class="player-chunk-switcher player-chunk-prev"></div>
-						<div class="player-chunk-switcher player-chunk-next"></div>`;
+									<div class="player-chunk-switcher player-chunk-next"></div>`;
 		
-		const content = document.createElement("div");
-		content.setAttribute("class", "player-content");
+		contentWrapper.appendChild(content)
 		
 		const player = document.createElement("div");
 		player.setAttribute("class", "player");
+		player.appendChild(timeLine)
+		player.appendChild(contentWrapper)
 		
-		player.innerHTML = `<div class="player"> 
-						<div class="timeLine">${timeLineChunks}</div>
-						<div class="player-content-wrapper">
-						<div class="player-chunk-switcher player-chunk-prev"></div>
-						<div class="player-chunk-switcher player-chunk-next"></div>
-						<div class="player-content">${playerChunks}</div>
-						</div>
-						</div>`;
+		return player
 	}
 }

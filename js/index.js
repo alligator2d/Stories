@@ -1,4 +1,6 @@
-initPlayer({
+import Player from "./player.js";
+
+new Player({
 	target: ".my-player",
 	slides: [
 		{
@@ -7,13 +9,11 @@ initPlayer({
 			filter: ['contrast(150%)', 'blur(5px)'],
 			overlays: [
 				{
-					type: "text",
-					value: "Hello!",
-					classes: [
-						"watercolor"
-					],
+					type: "Text",
+					text: "Hello!",
+					classes: ["watercolor"],
 					styles: {
-						// color: 'orange',
+						color: 'orange',
 						"font-size": "60px",
 						"text-shadow": "1px 1px #000",
 						top: "60%",
@@ -38,8 +38,8 @@ initPlayer({
 			
 			overlays: [
 				{
-					type: "text",
-					value: "Hello world!",
+					type: "Text",
+					text: "Hello world!",
 					styles: {
 						color: "blue",
 						"font-size": "30px",
@@ -55,4 +55,4 @@ initPlayer({
 		{ url: "https://i.pinimg.com/474x/ab/57/11/ab571192e42c7700a8e21dee5561091d.jpg", alt: "slide1" },
 		{ url: "https://i.pinimg.com/474x/03/6c/e6/036ce6a861a600547dfce558dcdf5b07.jpg", alt: "slide1" }
 	]
-});
+})

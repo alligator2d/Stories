@@ -10,21 +10,22 @@ export class Overlay {
 	classes = []
 	/**
 	 * Словарь дполнительных стилей для виджета
-	 * @type {Object<string, string | string[]>}
+	 * @type {Object<string, string>}
 	 */
 	styles= {}
 	
 	/**
 	 * Создает новый экземпляр виджета
-	 * @param params{{
-	 *	   type: string,
-	 *     classes?: string[],
-	 *     styles?: Object<string, string>
-	 *  }=}
-	 *  1. Type - тип создаваемого класса
-	 *  2. [classes] - список дополнительных классов
-	 *  3. [styles] - список дополнительных стилей
-	 */
+	 *      @param {{
+	 * 	    type: string,
+	 * 	    classes?: string[],
+	 * 	    styles?: Object<string, string>
+	 * 	  }=} [params] - параметры наложения:
+	 *     *
+	 *     * 1. type - тип создаваемого наложения
+	 *     * 2. [classes] - список дополнительных классов
+	 *     * 3. [styles] - список дополнительных стилей
+	 *     */
 	
 	constructor(params) {
 			this.type = params.type;
@@ -54,7 +55,7 @@ export class Overlay {
 		.map((i) => i.join(":"))
 		.join(";");
 		
-		const temp = `<div class="player-chunk-overlay ${this.classes}" style="${this.styles}"></div>`;
+		const temp = `<div class="player-chunk-overlay ${classes}" style="${styles}"></div>`;
 		const wrapper = document.createElement('div')
 		wrapper.innerHTML = temp
 		return wrapper.children[0]

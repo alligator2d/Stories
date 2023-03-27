@@ -1,4 +1,4 @@
-import {Overlay} from './overlay'
+import {Overlay} from './overlay.js'
 export class Question extends Overlay{
 	/**
 	 * @type {string}

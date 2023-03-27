@@ -1,3 +1,3 @@
-export * from './question'
-export * from './img'
-export * from './text'
+export * from './question.js'
+export * from './img.js'
+export * from './text.js'

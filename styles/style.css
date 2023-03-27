@@ -58,6 +58,7 @@ h1 {
 .player {
 	width: 350px;
 	margin: 0 auto;
+	user-select: none;
 	
 }
 .player-content-wrapper {
